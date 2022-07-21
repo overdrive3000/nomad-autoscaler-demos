@@ -1,13 +1,13 @@
 terraform {
-  required_version = ">= 0.13"
+  required_version = ">= 1.2"
 
   required_providers {
     aws = {
-      version = "~> 3.39"
+      version = "~> 4.22"
     }
 
     nomad = {
-      version = "~> 1.4.14"
+      version = "~> 1.4.17"
     }
   }
 }

@@ -1,7 +1,7 @@
 resource "aws_elb" "nomad_server" {
   name               = "${var.stack_name}-nomad-server"
-  availability_zones = distinct(aws_instance.nomad_server.*.availability_zone)
-  internal           = false
+  subnets            = var.subnet_ids
+  internal           = true
   instances          = aws_instance.nomad_server.*.id
   idle_timeout       = 360
 
@@ -22,8 +22,8 @@ resource "aws_elb" "nomad_server" {
 
 resource "aws_elb" "nomad_client" {
   name               = "${var.stack_name}-nomad-client"
-  availability_zones = var.availability_zones
-  internal           = false
+  internal           = true
+  subnets            = var.subnet_ids
   listener {
     instance_port     = 80
     instance_protocol = "http"

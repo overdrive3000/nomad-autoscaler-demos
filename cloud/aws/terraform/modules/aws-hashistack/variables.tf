@@ -20,10 +20,10 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "availability_zones" {
+variable "subnet_ids" {
   description = "The AWS region AZs to deploy into."
   type        = list(string)
-  default     = ["us-east-1a"]
+  default     = []
 }
 
 variable "vpc_id" {

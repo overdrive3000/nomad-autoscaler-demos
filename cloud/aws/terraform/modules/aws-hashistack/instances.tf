@@ -2,6 +2,7 @@ resource "aws_instance" "nomad_server" {
   ami                    = var.ami
   instance_type          = var.server_instance_type
   key_name               = var.key_name
+  subnet_id              = var.subnet_ids[0]
   vpc_security_group_ids = [aws_security_group.primary.id]
   count                  = var.server_count
 
@@ -18,6 +19,6 @@ resource "aws_instance" "nomad_server" {
     delete_on_termination = "true"
   }
 
-  user_data            = data.template_file.user_data_server.rendered
+  user_data            = local.user_data_server
   iam_instance_profile = aws_iam_instance_profile.nomad_server.name
 }

@@ -1,9 +1,13 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 1.2"
 
   required_providers {
     aws = {
-      version = "~> 2.65"
+      version = "~> 4.22"
+    }
+
+    nomad = {
+      version = "~> 1.4.17"
     }
   }
 }
@@ -28,11 +32,12 @@ module "hashistack_cluster" {
   owner_name         = var.owner_name
   owner_email        = var.owner_email
   region             = var.region
-  availability_zones = var.availability_zones
+  subnet_ids         = var.subnet_ids
   ami                = var.ami
   key_name           = var.key_name
-  allowlist_ip       = ["${module.my_ip_address.stdout}/32"]
+  allowlist_ip       = ["${module.my_ip_address.stdout}/32", "10.0.0.0/8"]
   stack_name         = var.stack_name
+  vpc_id             = var.vpc_id
 }
 
 module "hashistack_jobs" {

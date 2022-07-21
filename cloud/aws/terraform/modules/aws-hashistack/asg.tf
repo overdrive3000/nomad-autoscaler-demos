@@ -4,7 +4,7 @@ resource "aws_launch_template" "nomad_client" {
   instance_type          = var.client_instance_type
   key_name               = var.key_name
   vpc_security_group_ids = [aws_security_group.primary.id]
-  user_data              = base64encode(data.template_file.user_data_client.rendered)
+  user_data              = base64encode(local.user_data_client)
 
   iam_instance_profile {
     name = aws_iam_instance_profile.nomad_client.name
@@ -29,13 +29,13 @@ resource "aws_launch_template" "nomad_client" {
 }
 
 resource "aws_autoscaling_group" "nomad_client" {
-  name               = "${var.stack_name}-nomad_client"
-  availability_zones = var.availability_zones
-  desired_capacity   = var.client_count
-  min_size           = 0
-  max_size           = 10
-  depends_on         = [aws_instance.nomad_server]
-  load_balancers     = [aws_elb.nomad_client.name]
+  name                = "${var.stack_name}-nomad_client"
+  vpc_zone_identifier = var.subnet_ids
+  desired_capacity    = var.client_count
+  min_size            = 0
+  max_size            = 10
+  depends_on          = [aws_instance.nomad_server]
+  load_balancers      = [aws_elb.nomad_client.name]
 
   launch_template {
     id      = aws_launch_template.nomad_client.id
