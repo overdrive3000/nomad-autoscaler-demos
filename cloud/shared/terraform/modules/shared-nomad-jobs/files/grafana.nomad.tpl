@@ -79,7 +79,7 @@ EOH
           type     = "http"
           path     = "/api/health"
           interval = "10s"
-          timeout  = "2s"
+          timeout  = "3s"
         }
 
         tags = [

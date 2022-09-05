@@ -5,10 +5,11 @@ log_level = "DEBUG"
 telemetry {
   publish_allocation_metrics = true
   publish_node_metrics       = true
-  prometheus_metrics         = true
+  prometheus_metrics         = false
 }
 
 server {
   enabled          = true
   bootstrap_expect = SERVER_COUNT
+  license_path     = "/etc/nomad.d/license.hclic"
 }

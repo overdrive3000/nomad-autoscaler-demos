@@ -15,7 +15,7 @@ variable "subnet_ids" {
   ]
 }
 variable "ami" {
-  default = "ami-0814831ce62247efa"
+  default = "ami-0f2b66ecbe9cee808"
 }
 variable "key_name" {
   default = "jmesa-key"

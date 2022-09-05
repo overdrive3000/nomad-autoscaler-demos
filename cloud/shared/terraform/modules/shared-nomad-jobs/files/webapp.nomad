@@ -9,28 +9,51 @@ job "webapp" {
       port "toxiproxy_webapp" {}
     }
 
-    scaling {
-      enabled = true
-      min     = 1
-      max     = 20
+    # scaling {
+    #   enabled = true
+    #   min     = 1
+    #   max     = 20
 
-      policy {
-        cooldown            = "1m"
-        evaluation_interval = "30s"
+    #   policy {
+    #     cooldown            = "1m"
+    #     evaluation_interval = "30s"
 
-        check "avg_sessions" {
-          source = "prometheus"
-          query  = "sum(traefik_entrypoint_open_connections{entrypoint=\"webapp\"})/scalar(nomad_nomad_job_summary_running{task_group=\"demo\"})"
+    #     check "avg_sessions" {
+    #       source = "prometheus"
+    #       query  = "sum(traefik_entrypoint_open_connections{entrypoint=\"webapp\"})/scalar(nomad_nomad_job_summary_running{task_group=\"demo\"})"
 
-          strategy "target-value" {
-            target = 10
-          }
-        }
-      }
-    }
+    #       strategy "target-value" {
+    #         target = 10
+    #       }
+    #     }
+    #   }
+    # }
 
     task "webapp" {
       driver = "docker"
+
+      scaling "cpu" {
+        policy {
+          cooldown            = "1m"
+          evaluation_interval = "1m"
+
+          check "99pct" {
+            strategy "app-sizing-percentile" {}
+          }
+        }
+      }
+
+      scaling "mem" {
+        policy {
+          cooldown            = "1m"
+          evaluation_interval = "1m"
+
+          check "max" {
+            strategy "app-sizing-max" {}
+          }
+        }
+      }
+
 
       config {
         image = "hashicorp/demo-webapp-lb-guide"
@@ -44,7 +67,7 @@ job "webapp" {
 
       resources {
         cpu    = 500
-        memory = 256
+        memory = 512
       }
 
       service {
@@ -67,6 +90,7 @@ job "webapp" {
         hook    = "prestart"
         sidecar = true
       }
+
 
       config {
         image      = "shopify/toxiproxy:2.1.4"
@@ -101,8 +125,8 @@ tail -f /dev/null
       }
 
       resources {
-        cpu    = 100
-        memory = 32
+        cpu    = 200
+        memory = 128
       }
 
       service {

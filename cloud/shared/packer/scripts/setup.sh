@@ -24,7 +24,8 @@ CONSULDOWNLOAD=https://releases.hashicorp.com/consul/${CONSULVERSION}/consul_${C
 CONSULCONFIGDIR=/etc/consul.d
 CONSULDIR=/opt/consul
 
-NOMADVERSION=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/nomad | jq -r '.current_version')
+# NOMADVERSION="$(curl -s https://checkpoint-api.hashicorp.com/v1/check/nomad | jq -r '.current_version')+ent"
+NOMADVERSION="1.2.8+ent"
 NOMADDOWNLOAD=https://releases.hashicorp.com/nomad/${NOMADVERSION}/nomad_${NOMADVERSION}_linux_amd64.zip
 NOMADCONFIGDIR=/etc/nomad.d
 NOMADDIR=/opt/nomad

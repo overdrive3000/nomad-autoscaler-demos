@@ -80,7 +80,7 @@ EOH
           type     = "http"
           path     = "/-/healthy"
           interval = "10s"
-          timeout  = "2s"
+          timeout  = "3s"
         }
       }
     }

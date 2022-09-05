@@ -6,6 +6,8 @@ source "amazon-ebs" "hashistack" {
   ami_name      = "Hashistack {{timestamp}}"
   region        = var.region
   instance_type = "t2.medium"
+  vpc_id        = "vpc-0b3eba99139f0415c"
+  subnet_id     = "subnet-015595345084746bc"
 
   source_ami_filter {
     filters = {
@@ -17,8 +19,9 @@ source "amazon-ebs" "hashistack" {
     most_recent = true
   }
 
-  communicator = "ssh"
-  ssh_username = "ubuntu"
+  communicator  = "ssh"
+  ssh_username  = "ubuntu"
+  ssh_interface = "private_ip"
 
   tags = {
     OS_Version    = "Ubuntu"
